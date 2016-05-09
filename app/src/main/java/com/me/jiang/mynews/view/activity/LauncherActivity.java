@@ -12,8 +12,7 @@ import com.me.jiang.mynews.R;
  */
 public class LauncherActivity extends BaseActivity {
 
-  private boolean  hasLauncherImg;
-  private Bitmap launcherBitmap;
+
   private Handler handler=new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +22,8 @@ public class LauncherActivity extends BaseActivity {
             @Override
             public void run() {
                 Intent intent=new Intent(LauncherActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         },3000);
     }

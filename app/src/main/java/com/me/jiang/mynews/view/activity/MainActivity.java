@@ -159,26 +159,5 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         }
     }
 
-    private void  test()
-    {
-        ApiManager.getAllChannel()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ChannelBean>() {
-                    @Override
-                    public void call(ChannelBean channelBean) {
-                      System.out.println("获取频道数据成功："+channelBean.toString());
-                        showToast("获取数据成功");
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        System.out.println("获取频道数据失败："+throwable.getMessage());
-                        showToast("获取数据失败"+throwable.getMessage());
-                    }
-                });
-    }
-
-
 
 }

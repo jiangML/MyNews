@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    
+    <color name="black">#000000</color>
+    <color name="darkGray">#a9a9a9</color>
+    <color name="lightGrey">#d3d3d3</color>
+    <color name="silver">#c0c0c0</color>
+    <color name="fireBrick">#b22222</color>
+    <color name="darkRed">#8b0000</color>
+    <color name="white">#ffffff</color>
+    <color name="navy">#000080</color>
+    <color name="steelBlue">#4682b4</color>
+    
+    
 </resources>
