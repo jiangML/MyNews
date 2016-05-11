@@ -108,7 +108,6 @@ public class NewsFragment extends BaseFragment implements INewsFragment{
                   presenter.loadMore(channelId, page);
               }
           }
-
           @Override
           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
               super.onScrolled(recyclerView, dx, dy);
