@@ -17,13 +17,13 @@ public class BaseFragment extends Fragment implements ICommonView{
 
     @Override
     public void showToast(String message) {
-        if(toast==null)
-        {
-            toast= Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
-        }else {
-            toast.setText(message);
-        }
-        toast.show();
+//        if(toast==null)
+//        {
+//            toast= Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+//        }else {
+//            toast.setText(message);
+//        }
+//        toast.show();
     }
 
     @Override
@@ -35,11 +35,11 @@ public class BaseFragment extends Fragment implements ICommonView{
     public void showProgressDialog(String title, String message) {
         if(dialog==null)
         {
-            dialog= ProgressDialog.show(getActivity(), title, message);
+           // dialog= ProgressDialog.show(getActivity(), title, message);
         }else {
-            dialog.setTitle(title);
-            dialog.setMessage(message);
-            dialog.show();
+//            dialog.setTitle(title);
+//            dialog.setMessage(message);
+//            dialog.show();
         }
     }
 

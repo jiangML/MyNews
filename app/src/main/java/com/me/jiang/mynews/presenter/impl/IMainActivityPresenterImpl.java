@@ -1,7 +1,10 @@
 package com.me.jiang.mynews.presenter.impl;
 
+import android.content.Context;
+
 import com.me.jiang.mynews.bean.ChannelBean;
 import com.me.jiang.mynews.bean.NewsBean;
+import com.me.jiang.mynews.db.DbManager;
 import com.me.jiang.mynews.model.impl.ChannelModelImpl;
 import com.me.jiang.mynews.model.impl.NewsModelImpl;
 import com.me.jiang.mynews.presenter.IMainActivityPresenter;
@@ -12,6 +15,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by Administrator on 2016/5/6.
@@ -28,14 +34,12 @@ public class IMainActivityPresenterImpl implements IMainActivityPresenter,Channe
     {
         this.iMainActivityView=iMainActivityView;
         channelModel=new ChannelModelImpl(this);
-
     }
-
-
 
     @Override
     public void getAllChannel() {
-          iMainActivityView.showProgressDialog(null,"正在获取频道数据...");
+         // iMainActivityView.showProgressDialog(null,"正在获取频道数据...");
+          channelModel.setContext(context);
           channelModel.getAllChannel();
     }
     @Override
@@ -45,33 +49,29 @@ public class IMainActivityPresenterImpl implements IMainActivityPresenter,Channe
                 iMainActivityView.showNewsFragment(fragmentMap.get(channelId));
                 return;
             }
-
              channelIds.add(channelId);
              NewsFragment fragment=NewsFragment.getInstance(channelId,page);
-             fragmentMap.put(channelId,fragment);
+             fragmentMap.put(channelId, fragment);
              iMainActivityView.showNewsFragment(fragment);
     }
-
-
 
 
     @Override
     public void onSuccess(ChannelBean channelBean) {
           iMainActivityView.hideDialog();
-          iMainActivityView.showToast("获取频道数据成功;"+channelBean.toString());
           iMainActivityView.showChannel(channelBean);
-          String id=channelBean.getShowapi_res_body().getChannelList().get(0).getChannelId();
-         // getNews(id,"1");
     }
 
     @Override
     public void onFailure(Throwable e) {
           iMainActivityView.hideDialog();
-          iMainActivityView.showToast("获取频道数据错误："+e.getMessage());
+          System.out.println("获取频道数据错误--->" + e.getMessage());
     }
-
-
-
+    private Context context;
+   public void setContext(Context context)
+   {
+       this.context=context;
+   }
 
 
 }

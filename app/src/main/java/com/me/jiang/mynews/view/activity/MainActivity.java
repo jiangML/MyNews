@@ -1,5 +1,6 @@
 package com.me.jiang.mynews.view.activity;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.me.jiang.mynews.R;
 import com.me.jiang.mynews.api.ApiManager;
 import com.me.jiang.mynews.bean.ChannelBean;
+import com.me.jiang.mynews.db.DbManager;
 import com.me.jiang.mynews.presenter.impl.IMainActivityPresenterImpl;
 import com.me.jiang.mynews.view.adapter.NewsFragmentAdapter;
 import com.me.jiang.mynews.view.fragment.NewsFragment;
@@ -25,6 +27,8 @@ import com.me.jiang.mynews.view.iview.IMainActivityView;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -32,19 +36,13 @@ import rx.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity implements IMainActivityView{
 
     private Toolbar toolbar;
-    private  FloatingActionButton fab;
     private IMainActivityPresenterImpl presenter;
     private ProgressDialog dialog;
     private Toast toast;
-
     private NewsFragment currentFragment;
-
     private TabLayout tab_layout;
-
     private ViewPager vp;
-
     private  List<ChannelBean.ShowapiResBodyBean.ChannelListBean> channelListBean;
-
     private List<NewsFragment> fragmentList;
     private NewsFragmentAdapter adapter;
     private List<String> title=new ArrayList<>();
@@ -54,13 +52,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //test();
         init();
     }
 
     private void init()
     {
          presenter=new IMainActivityPresenterImpl(this);
+          presenter.setContext(MainActivity.this);
          toolbar = (Toolbar) findViewById(R.id.toolbar);
          tab_layout=(TabLayout)findViewById(R.id.tab_layout);
          vp=(ViewPager)findViewById(R.id.vpager);
@@ -69,19 +67,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
          setSupportActionBar(toolbar);
          if(getSupportActionBar()!=null)
          {
-             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-             getSupportActionBar().setTitle("MyNews");
-             getSupportActionBar().setIcon(R.drawable.icon_launcher);
+              getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+              getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon);
          }
 
-         fab = (FloatingActionButton) findViewById(R.id.fab);
-         fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG) .setAction("Action", null).show();
-
-                }
-            });
         fragmentList=new ArrayList<>();
         presenter.getAllChannel();
     }
@@ -89,38 +78,25 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
 
 
     @Override
-    public void showChannel(ChannelBean channelBean) {
-        if(channelBean!=null)
-        {
-            showToast("获取数据成功---");
-
-        }else if(channelBean==null){
-            showToast("获取数据失败====");
-
-        }
+    public void showChannel(final ChannelBean channelBean) {
+        if(channelBean==null) return;
         channelListBean=channelBean.getShowapi_res_body().getChannelList();
         for(int i=0;i<channelListBean.size();i++)
         {
             ChannelBean.ShowapiResBodyBean.ChannelListBean bean=channelListBean.get(i);
             fragmentList.add(NewsFragment.getInstance(bean.getChannelId(), "1"));
             title.add(bean.getName());
-            System.out.println("频道新闻：---->"+bean.getName());
         }
-
         adapter=new NewsFragmentAdapter(fragmentList,this,title,getSupportFragmentManager());
         vp.setAdapter(adapter);
         tab_layout.setupWithViewPager(vp);
-
     }
 
     @Override
     public void showNewsFragment(NewsFragment fragment) {
-
-        if (fragmentList.contains(fragment))
-            return;
+        if (fragmentList.contains(fragment))    return;
         fragmentList.add(fragment);
         adapter.notifyDataSetChanged();
-
     }
 
     @Override

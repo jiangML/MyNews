@@ -22,7 +22,6 @@ import java.util.List;
  */
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
     private Context context;
     private NewsBean newsBean;
     private static final int TYPE_REFRESH=0x100;//刷新
@@ -31,12 +30,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final int LOADING=0X200;//正在加载更多
     public static final int LOAD_FINSH=0x201;//加载完成
     public static final int LOAD_START=0X202;//开始加载更多
+    public static final int HIDE_LOAD_VIEW=0x203;//隐藏加载更多
+    private ItemOnChickListener listener;
     private  int load_Staust=LOAD_START;
-
     private List<NewsBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> news=new ArrayList<>();
-
     private LayoutInflater inflater;
 
+    public interface ItemOnChickListener
+    {
+        void onItemChick(View view,NewsBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean news,int position);
+    }
 
     public RecycleViewAdapter(Context context,NewsBean bean)
     {
@@ -59,40 +62,56 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return news.size()+1;
+        return news!=null?news.size()+1:1;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if(holder  instanceof NewsItemView)
         {
             NewsItemView itemView=(NewsItemView)holder;
             itemView.tv_title.setText(news.get(position).getTitle());
             itemView.tv_from.setText(news.get(position).getSource());
-           // itemView.tv_content.setText(Baseutil.ToDBC(news.get(position).getDesc()));
             String content=Baseutil.ToDBC(news.get(position).getDesc());
             content.replaceAll("\r|\n", "").replaceAll(" ","");
-           // content.replaceAll(" ","");
             itemView.tv_content.setText(Html.fromHtml(content));
             itemView.tv_pubdata.setText(news.get(position).getPubDate());
 
             if(news.get(position).getImageurls()!=null&&news.get(position).getImageurls().size()>0)
             {
                 Glide.with(context).load(news.get(position).getImageurls().get(0).getUrl()).into(itemView.iv_img);
+            }else{
+                itemView.iv_img.setVisibility(View.GONE);
             }
+            itemView.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  if(listener!=null)
+                  {
+                    listener.onItemChick(v,news.get(position),position);
+                  }
+                }
+            });
+
         }else{
             FooterView footerView=(FooterView)holder;
            switch (load_Staust)
            {
                case LOAD_START :
+                   footerView.itemView.setVisibility(View.VISIBLE);
                    footerView.tv_load_more.setText("加载更多");
                    break;
                case LOADING:
+                   footerView.itemView.setVisibility(View.VISIBLE);
                    footerView.tv_load_more.setText("正在加载更多...");
                    break;
                case LOAD_FINSH:
+                   footerView.itemView.setVisibility(View.VISIBLE);
                    footerView.tv_load_more.setText("正在加载更多...");
+                   break;
+               case HIDE_LOAD_VIEW:
+                   footerView.itemView.setVisibility(View.GONE);
                    break;
            }
         }
@@ -110,7 +129,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             view=inflater.inflate(R.layout.footer,parent,false);
             return new FooterView(view);
         }
-
     }
 
 
@@ -171,7 +189,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tv_content;
         ImageView iv_img;
         TextView tv_pubdata;
-
         NewsItemView(View itemView)
         {
             super(itemView);
@@ -184,7 +201,23 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
+    /**
+     * 隐藏底部加载更多view
+     */
+    public void hideFooterView()
+    {
+        load_Staust=HIDE_LOAD_VIEW;
+        notifyDataSetChanged();
+    }
 
+    /**
+     * 设置每项点击监听
+     * @param listener
+     */
+    public void  setOnItemChickListener(ItemOnChickListener listener)
+    {
+        this.listener=listener;
+    }
 
 
 }
