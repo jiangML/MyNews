@@ -24,6 +24,8 @@ import com.me.jiang.mynews.view.activity.DetailActivity;
 import com.me.jiang.mynews.view.adapter.RecycleViewAdapter;
 import com.me.jiang.mynews.view.iview.INewsFragment;
 
+import java.security.Permission;
+
 
 /**
  * Created by Administrator on 2016/5/6.
@@ -97,6 +99,7 @@ public class NewsFragment extends BaseFragment implements INewsFragment{
       recycle_view.setLayoutManager(linearLayoutManager);
       recycle_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
           int lastVisibleItem = 0;
+
           @Override
           public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
               super.onScrollStateChanged(recyclerView, newState);
@@ -108,6 +111,7 @@ public class NewsFragment extends BaseFragment implements INewsFragment{
                   presenter.loadMore(channelId, page);
               }
           }
+
           @Override
           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
               super.onScrolled(recyclerView, dx, dy);
@@ -122,6 +126,7 @@ public class NewsFragment extends BaseFragment implements INewsFragment{
             }
         });
         presenter=new INewsFragmentPresenterImpl(this);
+        presenter.setContext(getActivity());
         presenter.getNews(channelId,page);
         return view;
     }

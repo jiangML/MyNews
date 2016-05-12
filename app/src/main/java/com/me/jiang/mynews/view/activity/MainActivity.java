@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
 
     @Override
     public void showNewsFragment(NewsFragment fragment) {
-        if (fragmentList.contains(fragment))    return;
-        fragmentList.add(fragment);
-        adapter.notifyDataSetChanged();
+//        if (fragmentList.contains(fragment))    return;
+//        fragmentList.add(fragment);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override

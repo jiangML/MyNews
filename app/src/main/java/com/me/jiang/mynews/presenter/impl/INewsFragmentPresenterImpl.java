@@ -1,5 +1,8 @@
 package com.me.jiang.mynews.presenter.impl;
 
+import android.content.ContentValues;
+import android.content.Context;
+
 import com.me.jiang.mynews.bean.NewsBean;
 import com.me.jiang.mynews.model.impl.NewsModelImpl;
 import com.me.jiang.mynews.presenter.INewsFragmentPresenter;
@@ -12,6 +15,8 @@ public class INewsFragmentPresenterImpl implements INewsFragmentPresenter,NewsMo
 
     private INewsFragment iNewsFragment;//view
     private NewsModelImpl newsModel;
+    private Context context;
+
     public INewsFragmentPresenterImpl(INewsFragment iNewsFragment)
     {
         this.iNewsFragment=iNewsFragment;
@@ -21,6 +26,7 @@ public class INewsFragmentPresenterImpl implements INewsFragmentPresenter,NewsMo
 
     @Override
     public void getNews(String channelId, String page) {
+      newsModel.setContext(context);
       iNewsFragment.showProgressDialog(null,"正在加载新闻数据...");
       newsModel.getNews(channelId,page);
     }
@@ -65,6 +71,11 @@ public class INewsFragmentPresenterImpl implements INewsFragmentPresenter,NewsMo
    public void cancel()
    {
       newsModel.cancel();
+   }
+
+   public void setContext(Context context)
+   {
+       this.context=context;
    }
 
 }

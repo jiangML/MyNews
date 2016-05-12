@@ -97,7 +97,6 @@ public class ChannelModelImpl  implements IChannelModel{
             });
     }
 
-
     private Context context;
     public void setContext(Context context)
     {

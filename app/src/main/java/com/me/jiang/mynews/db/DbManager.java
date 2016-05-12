@@ -4,11 +4,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.me.jiang.mynews.bean.ChannelBean;
 import com.me.jiang.mynews.bean.NewsBean;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -23,6 +28,7 @@ public class DbManager {
     private SQLiteDatabase db;
     private DbHelper helper;
     private static Context context;
+    private static  DbManager instance;
     private static class DbManageHelper{
         static final DbManager manager=new DbManager(context);
     }
@@ -33,8 +39,19 @@ public class DbManager {
     }
     public static  DbManager getInstance(Context c)
     {
-        context=c;
-        return DbManageHelper.manager;
+//        context=c;
+//        return DbManageHelper.manager;
+        if(instance==null)
+    {
+        synchronized (DbManager.class)
+        {
+            if(instance==null)
+            {
+                instance=new DbManager(c);
+            }
+        }
+    }
+        return instance;
     }
 
     /**
@@ -76,8 +93,9 @@ public class DbManager {
          ContentValues values=new ContentValues();
          values.put("channel_id", channelId);
          values.put("channel_name", name);
+         long i=db.insert("channel",null,values);
          db.close();
-        return db.insert("channel",null,values);
+         return i;
     }
 
     /**
@@ -119,8 +137,9 @@ public class DbManager {
         values.put("news_content", content);
         values.put("news_page", page);
         values.put("news_channel", channelId);
+        long i=db.insert("news",null,values);
         db.close();
-        return db.insert("news",null,values);
+        return i;
     }
 
 
@@ -129,24 +148,73 @@ public class DbManager {
      * @param channelID
      * @return
      */
-    public NewsBean getNews(String channelID)
+    public synchronized  NewsBean getNews(String channelID)
     {
         db=helper.getReadableDatabase();
-        Cursor cursor=db.rawQuery("select * from news where news_channel",new String[]{channelID});
+        Cursor cursor=db.rawQuery("select * from news where news_channel=?",new String[]{channelID});
         NewsBean bean=new NewsBean();
         if(cursor!=null&&cursor.getCount()>0)
         {
             cursor.moveToNext();
             String content=cursor.getString(cursor.getColumnIndex("news_content"));
+            System.out.println(channelID+"====查询的新闻数据-->"+content);
             if(content!=null)
             {
                 Gson gson=new Gson();
                 Type type=new TypeToken<NewsBean>(){}.getType();
                 bean=gson.fromJson(content,type);
             }
+            cursor.close();
+            db.close();
+            return bean;
+        }else {
+            System.out.println(channelID+"====查询的新闻数据为空");
+            db.close();
+            return null;
         }
-        return bean;
+
     }
+
+    /**
+     * 插入新闻数据
+     * @param bean
+     * @param page
+     * @param channelId
+     * @return
+     */
+    public synchronized  void insertNews(NewsBean bean,String page,String channelId)
+    {
+        db=helper.getReadableDatabase();
+        Cursor cursor=db.rawQuery("select * from news where news_channel=?",new String[]{channelId});
+        if(cursor==null||cursor.getCount()<0)
+        {
+            db.close();
+            db=helper.getWritableDatabase();
+            Gson gson=new Gson();
+            String g=gson.toJson(bean);
+            ContentValues values=new ContentValues();
+            values.put("news_content",g);
+            values.put("news_page",page);
+            values.put("news_channel", channelId);
+            db.insert("news", null, values);
+            db.close();
+            System.out.println(channelId + "====插入新闻数据");
+        }else{
+            cursor.close();
+            db.close();
+            db=helper.getWritableDatabase();
+            Gson gson=new Gson();
+            String g=gson.toJson(bean);
+            ContentValues values=new ContentValues();
+            values.put("news_content",g);
+            values.put("news_page",page);
+            db.update("news", values, "news_channel=?", new String[]{channelId});
+            db.close();
+            System.out.println(channelId + "====更新数据库新闻数据");
+        }
+
+    }
+
 
 
 }
