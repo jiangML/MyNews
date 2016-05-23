@@ -8,4 +8,6 @@
 ####  个人觉得retrofit和RxJava 真的是很不错的两个框架。特别是RxJava强大的操作符可以帮助我们实现以前很复杂的东西。解决了回调嵌套的麻烦。让复杂事情的逻辑变动更加清楚。<br>
 
 ####app启动界面<br>
-![](https://github.com/jiangML/MyNews/blob/master/raw/master/login.png =400x710)
+![](https://github.com/jiangML/MyNews/blob/master/raw/master/login.png)
+![baidu](http://www.baidu.com/img/bdlogo.gif )
+<img src="https://github.com/jiangML/MyNews/blob/master/raw/master/login.png" width=400 height=710/>
