@@ -13,6 +13,8 @@ import com.me.jiang.mynews.view.iview.INewsFragment;
  */
 public class INewsFragmentPresenterImpl implements INewsFragmentPresenter,NewsModelImpl.NewsOnOnListener {
 
+    private String ATG="INewsFragmentPresenterImpl";
+
     private INewsFragment iNewsFragment;//view
     private NewsModelImpl newsModel;
     private Context context;

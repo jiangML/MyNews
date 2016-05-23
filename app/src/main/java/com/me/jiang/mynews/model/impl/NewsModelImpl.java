@@ -1,6 +1,7 @@
 package com.me.jiang.mynews.model.impl;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.me.jiang.mynews.api.ApiManager;
 import com.me.jiang.mynews.bean.NewsBean;
@@ -25,8 +26,7 @@ public class NewsModelImpl implements INewsModel {
     private Subscription subscription;
     private CompositeSubscription compositeSubscription;
     private Context context;
-
-
+    private String TAG="NewsModelImpl";
     public interface NewsOnOnListener {
         void onSuccess(NewsBean newsBean);
 
@@ -49,7 +49,7 @@ public class NewsModelImpl implements INewsModel {
                                 if(context!=null)
                                 {
                                     DbManager.getInstance(context).insertNews(newsBean, page, channelId);
-                                    System.out.println("-----保存新闻数据到数据库------");
+                                    Log.d(TAG, "-----保存新闻数据到数据库------");
                                 }
                             }
                          }))
@@ -57,10 +57,8 @@ public class NewsModelImpl implements INewsModel {
 //                             @Override
 //                             public Boolean call(NewsBean newsBean) {
 //                                 if (context != null && Baseutil.getNetType(context) == Baseutil.NETTYPE_WIFI) {
-//                                     System.out.println("-----当前是wifi 从网络获取------");
 //                                     return false;
 //                                 } else {
-//                                     System.out.println("-----当前不是wifi 从数据库获取------");
 //                                     return true;
 //                                 }
 //                             }
@@ -73,14 +71,14 @@ public class NewsModelImpl implements INewsModel {
                              public void call(NewsBean newsBean) {
                                  if (listener != null)
                                      listener.onSuccess(newsBean);
-                                 System.out.println("-----获取成功------");
+                                 Log.d(TAG, "-----获取成功------");
                              }
                          }, new Action1<Throwable>() {
                              @Override
                              public void call(Throwable throwable) {
                                  if(listener!=null)
                                      listener.onFailuer(throwable);
-                                 System.out.println("-----获取失败------");
+                                 Log.d(TAG, "-----获取失败------");
                              }
                          });
 
@@ -128,10 +126,10 @@ public class NewsModelImpl implements INewsModel {
                // NewsBean news=null;
                 if(news!=null&&news.getShowapi_res_body().getPagebean().getContentlist()!=null&&news.getShowapi_res_body().getPagebean().getContentlist().size()>0)
                 {
-                    System.out.println("-----获取数据库中的新闻数据------");
+                    Log.d(TAG, "-----获取数据库中的新闻数据------");
                     subscriber.onNext(news);
                 }else{
-                    System.out.println("-----获取数据库中的新闻数据为空------");
+                    Log.d(TAG, "-----获取数据库中的新闻数据为空------");
                     subscriber.onCompleted();
                 }
 

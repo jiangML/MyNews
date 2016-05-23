@@ -1,6 +1,7 @@
 package com.me.jiang.mynews.presenter.impl;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.me.jiang.mynews.bean.ChannelBean;
 import com.me.jiang.mynews.bean.NewsBean;
@@ -11,10 +12,12 @@ import com.me.jiang.mynews.presenter.IMainActivityPresenter;
 import com.me.jiang.mynews.view.fragment.NewsFragment;
 import com.me.jiang.mynews.view.iview.IMainActivityView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.LoggingMXBean;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -24,7 +27,7 @@ import rx.Subscriber;
  * 首页 MainActivity 的presenter
  */
 public class IMainActivityPresenterImpl implements IMainActivityPresenter,ChannelModelImpl.ChannelOnListener{
-
+    private String TAG="IMainActivityPresenterImpl";
     private IMainActivityView iMainActivityView;// view
     private ChannelModelImpl channelModel; //model
     private static Set<String> channelIds=new HashSet<>();
@@ -65,10 +68,10 @@ public class IMainActivityPresenterImpl implements IMainActivityPresenter,Channe
     @Override
     public void onFailure(Throwable e) {
           iMainActivityView.hideDialog();
-          System.out.println("获取频道数据错误--->" + e.getMessage());
+          Log.d(TAG, "获取频道数据错误--->" + e.getMessage());
     }
     private Context context;
-   public void setContext(Context context)
+    public void setContext(Context context)
    {
        this.context=context;
    }

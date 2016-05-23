@@ -52,7 +52,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 /**
- * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
+ * 缓存工具
  */
 public class ACache {
 	public static final int TIME_HOUR = 60 * 60;
