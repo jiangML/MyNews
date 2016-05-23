@@ -9,7 +9,9 @@
 
 ####app启动界面<br>
 <img src="https://github.com/jiangML/MyNews/blob/master/raw/master/login.png" width=400 height=710/><br>
-####主界面
+####相关内容界面
 <img src="https://github.com/jiangML/MyNews/blob/master/raw/master/1.png" width=400 height=710/> 
 <img src="https://github.com/jiangML/MyNews/blob/master/raw/master/2.png" width=400 height=710/><br>
-<img src="https://github.com/jiangML/MyNews/blob/master/raw/master/3.png" width=400 height=710/><br>
+<img src="https://github.com/jiangML/MyNews/blob/master/raw/master/3.png" width=400 height=710/>
+<img src="https://github.com/jiangML/MyNews/blob/master/raw/master/5.png" width=400 height=710/>
+<img src="https://github.com/jiangML/MyNews/blob/master/raw/master/6.png" width=400 height=710/><br>
