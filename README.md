@@ -9,4 +9,3 @@
 
 ####app启动界面<br>
 ![login](https://github.com/jiangML/MyNews/raw/master/login.png)
-![](https://github.com/jiangML/MyNews/blob/master/raw/master/login.png)
