@@ -15,7 +15,7 @@
 * 主界面用到了android5.0以上的最新控件，Toolbar。
 * 主界面时采用ViewPager+Fragment来显示各个新闻频道的数据<br>
 
-###个人感觉采用MVP模式开发app在某些方面的确比传统的MVC开发模式要好一些。MVP模式把数据、界面、逻辑（model+view+presenter）这三个模块进行了分离。presenter成为了连接model和view的中间件。分别定义model、view、presenter的接口。然后实现这些接口。在实现了presenten中引用实现了model、view的接口。在presenter中处理好了业务逻辑以后调用model的接口改变数据实体。同时调用view的接口刷新UI给用户反馈结果。这就是MVP模式的大楷流程。MVP的好处就是当view层改的时候我们不需要修改过多的代码就可以实现view的改变并且在Activity和Fragemnt中不在会有处理逻辑的相关代码，这样的话代码逻辑就更清楚。所以这一点是我觉得很好的地方。
+#####个人感觉采用MVP模式开发app在某些方面的确比传统的MVC开发模式要好一些。MVP模式把数据、界面、逻辑（model+view+presenter）这三个模块进行了分离。presenter成为了连接model和view的中间件。分别定义model、view、presenter的接口。然后实现这些接口。在实现了presenten中引用实现了model、view的接口。在presenter中处理好了业务逻辑以后调用model的接口改变数据实体。同时调用view的接口刷新UI给用户反馈结果。这就是MVP模式的大楷流程。MVP的好处就是当view层改的时候我们不需要修改过多的代码就可以实现view的改变并且在Activity和Fragemnt中不在会有处理逻辑的相关代码，这样的话代码逻辑就更清楚。所以这一点是我觉得很好的地方。
 
 ####app启动界面<br>
 <img src="https://github.com/jiangML/MyNews/blob/master/raw/master/login.png" width=400 height=710/><br>
